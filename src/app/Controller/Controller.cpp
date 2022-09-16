@@ -1,7 +1,7 @@
 #include "Controller.h"
 #include "DHT11.h"
 
-Controller::Controller(Service *serv, ClockService *clockServ,TempHumidService *tempHumidService)
+Controller::Controller(Service *serv, ClockService *clockServ,TempHumidService *tempHumidService)  // 어느 서비스에 분배해줄것인가 
 {
     this -> service = serv;
     this -> clockService = clockServ;
@@ -35,4 +35,9 @@ void Controller::updateEvent(std::string strBtn)
 void Controller::updateTempHumid(DHT_Data DHT_Data)
 {
     tempHumidService -> updateEvent(DHT_Data);
+}
+
+void Controller::updateDistance(int distance)
+{
+    service -> updateDistance(distance);
 }

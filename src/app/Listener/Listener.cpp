@@ -1,13 +1,15 @@
 #include "Listener.h"
 #include <wiringPi.h>
 
-Listener::Listener(Button *modeButton,Button *powerButton, Controller *control, ClockCheck *clock, DHT11 *dht11)
+Listener::Listener(Button *modeButton,Button *powerButton, Controller *control, ClockCheck *clock, DHT11 *dht11,UltraSonic *ultraSonic)
+// event를 받음 
 {
     this -> modeButton = modeButton;
     this -> powerButton = powerButton;
     this -> controller = control;
     this -> clockCheck = clock;
     this -> dht11 = dht11;
+    this -> ultraSonic = ultraSonic;
 }
 
 Listener::~Listener()
@@ -45,4 +47,11 @@ void Listener::checkEvent()
         }
     }
 
+    static unsigned int prevUltraSonicTime = 0;
+    if(millis() - prevUltraSonicTime > 1000)
+    {
+        prevUltraSonicTime = millis();
+        int distance = ultraSonic -> readDistance();
+        controller -> updateDistance(distance);
+    }
 }
